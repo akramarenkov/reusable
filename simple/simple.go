@@ -1,3 +1,5 @@
+// Simple temporary buffer of variable length. Does not automatically recreate the
+// buffer to reduce memory usage.
 package simple
 
 import (
