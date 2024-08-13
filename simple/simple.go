@@ -58,7 +58,8 @@ func (bfr *Buffer[Type]) Get(length int) []Type {
 }
 
 // Recreates the buffer with the initial length if the capacity of the current buffer
-// is greater than the initial length. Used to free up memory from an overgrown buffer.
+// is greater than the capacity with initial length. Used to free up memory from an
+// overgrown buffer.
 func (bfr *Buffer[Type]) Reset() {
 	if cap(bfr.slice) > bfr.grower(bfr.initial) {
 		bfr.remake(bfr.initial)

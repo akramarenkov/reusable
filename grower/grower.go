@@ -61,8 +61,8 @@ func Waning(requested int) int {
 		smallThreshold = 256
 		// This value is selected so that the result with an input value of
 		// smallThreshold is the same in both the small and main versions i.e. that
-		// the condition (requested+smallConjugation)/4 == requested*2 is fulfilled with
-		// requested equal to smallThreshold
+		// the condition requested+(requested+smallConjugation)/4 == requested*2 is
+		// fulfilled with requested equal to smallThreshold
 		smallConjugation = 768
 	)
 
