@@ -11,76 +11,77 @@ const (
 
 // Calculates the buffer capacity based on the requested buffer length.
 //
-// Must return a zero value when the input value is zero.
+// Must return a zero capacity when the requested length is zero.
 //
-// Must return a positive value when the input value is positive.
+// Calculated capacity cannot be less than the requested length.
 //
-// Must be monotonically non-decreasing.
-type Grower func(requested int) int
+// Dependence of the calculated capacity on the requested length must be monotonically
+// non-decreasing.
+type Grower func(length int) int
 
-// Returns the buffer capacity exactly equal to its requested length.
-func Exactly(requested int) int {
-	return requested
+// Returns the capacity exactly equal to its requested length.
+func Exactly(length int) int {
+	return length
 }
 
-// Returns the buffer capacity 25 percent greater than its requested length.
-func Quarter(requested int) int {
+// Returns the capacity 25 percent greater than its requested length.
+func Quarter(length int) int {
 	// First negative value will cause panic and will not lead to a chain of
 	// incorrect calculations
-	if requested <= 0 {
-		return requested
+	if length <= 0 {
+		return length
 	}
 
-	addition := requested >> binaryPowerOfFour
+	addition := length >> binaryPowerOfFour
 
 	if addition == 0 {
 		addition = 1
 	}
 
 	// Cannot be overflowed to a non-negative value
-	newed := requested + addition
+	capacity := length + addition
 
 	// overflowed, maximum value is returned to satisfy the condition of monotone
 	// non-decreasingness
-	if newed < 0 {
+	if capacity < 0 {
 		return math.MaxInt
 	}
 
-	return newed
+	return capacity
 }
 
-// Returns the buffer capacity from 700 to 25 percent greater than its requested length.
-func Waning(requested int) int {
+// Returns the capacity from 700 to 25 percent greater than its requested length.
+func Waning(length int) int {
 	const (
 		// Value is chosen speculatively
 		tinyThreshold = 4
-		// This value is selected so that the result with an input value of
+		// This value is selected so that the capacity with an requested length equal to
 		// tinyThreshold is the same in both the tiny and small versions
 		tinyConjugation = 8
 		// Value is chosen speculatively
 		smallThreshold = 256
-		// This value is selected so that the result with an input value of
+		// This value is selected so that the capacity with an requested length equal to
 		// smallThreshold is the same in both the small and main versions i.e. that
-		// the condition requested+(requested+smallConjugation)/4 == requested*2 is
-		// fulfilled with requested equal to smallThreshold
+		// the condition length+(length+smallConjugation)/4 == 2*length is
+		// fulfilled with requested length equal to smallThreshold
 		smallConjugation = 768
 	)
 
 	// First negative value will cause panic and will not lead to a chain of
 	// incorrect calculations
-	if requested <= 0 {
-		return requested
+	if length <= 0 {
+		return length
 	}
 
 	switch {
-	case requested <= tinyThreshold:
+	case length <= tinyThreshold:
 		return tinyConjugation
-	case requested <= smallThreshold:
-		return requested << binaryPowerOfTwo
+	case length <= smallThreshold:
+		return length << binaryPowerOfTwo
 	}
 
 	// Cannot be overflowed to a non-negative value
-	interim := (requested + smallConjugation)
+	interim := (length + smallConjugation)
 
 	// overflowed, maximum value is returned to satisfy the condition of monotone
 	// non-decreasingness
@@ -91,13 +92,13 @@ func Waning(requested int) int {
 	addition := interim >> binaryPowerOfFour
 
 	// Cannot be overflowed to a non-negative value
-	newed := requested + addition
+	capacity := length + addition
 
 	// overflowed, maximum value is returned to satisfy the condition of monotone
 	// non-decreasingness
-	if newed < 0 {
+	if capacity < 0 {
 		return math.MaxInt
 	}
 
-	return newed
+	return capacity
 }

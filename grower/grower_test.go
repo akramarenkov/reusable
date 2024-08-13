@@ -8,9 +8,9 @@ import (
 )
 
 func TestExactly(t *testing.T) {
-	for required := range 1 << 16 {
-		require.Equal(t, required, Exactly(required))
-		require.Equal(t, -required, Exactly(-required))
+	for length := range 1 << 16 {
+		require.Equal(t, length, Exactly(length))
+		require.Equal(t, -length, Exactly(-length))
 	}
 
 	require.Equal(t, math.MaxInt, Exactly(math.MaxInt))
@@ -41,12 +41,12 @@ func TestQuarter(t *testing.T) {
 	require.Equal(t, 1<<30+1<<28, Quarter(1<<30))
 	require.Equal(t, math.MaxInt, Quarter(quarterMaxUnoverflowed()))
 
-	// newed is overflowed
+	// capacity is overflowed
 	require.Equal(t, math.MaxInt, Quarter(quarterMaxUnoverflowed()+1))
 	require.Equal(t, math.MaxInt, Quarter(math.MaxInt))
 
-	for required := range 1 << 16 {
-		require.Equal(t, -required, Quarter(-required))
+	for length := range 1 << 16 {
+		require.Equal(t, -length, Quarter(-length))
 	}
 
 	require.Equal(t, math.MinInt, Quarter(math.MinInt))
@@ -86,14 +86,14 @@ func TestWaning(t *testing.T) {
 	require.Equal(t, 1342177472, Waning(1<<30))
 	require.Equal(t, math.MaxInt, Waning(waningMaxUnoverflowed()))
 
-	// newed is overflowed
+	// capacity is overflowed
 	require.Equal(t, math.MaxInt, Waning(waningMaxUnoverflowed()+1))
 
 	// interim is overflowed
 	require.Equal(t, math.MaxInt, Waning(math.MaxInt))
 
-	for required := range 1 << 16 {
-		require.Equal(t, -required, Waning(-required))
+	for length := range 1 << 16 {
+		require.Equal(t, -length, Waning(-length))
 	}
 
 	require.Equal(t, math.MinInt, Waning(math.MinInt))
@@ -107,8 +107,8 @@ func BenchmarkExactly(b *testing.B) {
 	// capacity and require is used to prevent compiler optimizations
 	capacity := 0
 
-	for required := range b.N {
-		capacity = Exactly(required)
+	for length := range b.N {
+		capacity = Exactly(length)
 	}
 
 	b.StopTimer()
@@ -121,8 +121,8 @@ func BenchmarkQuarter(b *testing.B) {
 	// capacity and require is used to prevent compiler optimizations
 	capacity := 0
 
-	for required := range b.N {
-		capacity = Quarter(required)
+	for length := range b.N {
+		capacity = Quarter(length)
 	}
 
 	b.StopTimer()
@@ -135,8 +135,8 @@ func BenchmarkWaning(b *testing.B) {
 	// capacity and require is used to prevent compiler optimizations
 	capacity := 0
 
-	for required := range b.N {
-		capacity = Waning(required)
+	for length := range b.N {
+		capacity = Waning(length)
 	}
 
 	b.StopTimer()
