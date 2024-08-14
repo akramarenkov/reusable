@@ -50,13 +50,22 @@ func New[Type any](limit int, growing ...grower.Grower) *Buffer[Type] {
 
 // Increases/decrease buffer length to specified value and returns it.
 //
+// If a length of zero is specified, the current buffer will simply be returned without
+// any additional processing.
+//
 // Data in the buffer may and most likely will not persist between calls.
 func (bfr *Buffer[Type]) Get(length int) []Type {
+	if length == 0 {
+		return bfr.slice
+	}
+
 	if length <= cap(bfr.slice) {
-		return bfr.slice[:length]
+		bfr.slice = bfr.slice[:length]
+		return bfr.slice
 	}
 
 	if bfr.limit != 0 {
+		bfr.slice = bfr.slice[:bfr.limit]
 		return bfr.slice
 	}
 

@@ -5,6 +5,7 @@ import (
 	"unsafe"
 
 	"github.com/akramarenkov/reusable/grower"
+
 	"github.com/stretchr/testify/require"
 )
 
@@ -13,22 +14,20 @@ func TestLimited(t *testing.T) {
 
 	first := buffer.Get(1024)
 	require.Len(t, first, 1024)
+	require.Len(t, buffer.Get(0), 1024)
 	require.Equal(t, 1024, cap(first))
 
 	second := buffer.Get(512)
 	require.Len(t, second, 512)
+	require.Len(t, buffer.Get(0), 512)
 	require.Equal(t, 1024, cap(second))
 	require.Same(t, unsafe.SliceData(first), unsafe.SliceData(second))
 
-	third := buffer.Get(0)
-	require.Empty(t, third)
+	third := buffer.Get(2048)
+	require.Len(t, third, 1024)
+	require.Len(t, buffer.Get(0), 1024)
 	require.Equal(t, 1024, cap(third))
 	require.Same(t, unsafe.SliceData(first), unsafe.SliceData(third))
-
-	fourth := buffer.Get(2048)
-	require.Len(t, fourth, 1024)
-	require.Equal(t, 1024, cap(fourth))
-	require.Same(t, unsafe.SliceData(first), unsafe.SliceData(fourth))
 }
 
 func TestUnlimited(t *testing.T) {
@@ -36,20 +35,24 @@ func TestUnlimited(t *testing.T) {
 
 	first := buffer.Get(1024)
 	require.Len(t, first, 1024)
+	require.Len(t, buffer.Get(0), 1024)
 	require.Equal(t, 1472, cap(first))
 
 	second := buffer.Get(1472)
 	require.Len(t, second, 1472)
+	require.Len(t, buffer.Get(0), 1472)
 	require.Equal(t, 1472, cap(second))
 	require.Same(t, unsafe.SliceData(first), unsafe.SliceData(second))
 
 	third := buffer.Get(2048)
 	require.Len(t, third, 2048)
+	require.Len(t, buffer.Get(0), 2048)
 	require.Equal(t, 2752, cap(third))
 	require.NotSame(t, unsafe.SliceData(first), unsafe.SliceData(third))
 
 	fourth := buffer.Get(1024)
 	require.Len(t, fourth, 1024)
+	require.Len(t, buffer.Get(0), 1024)
 	require.Equal(t, 2752, cap(fourth))
 	require.Same(t, unsafe.SliceData(third), unsafe.SliceData(fourth))
 }
@@ -59,20 +62,24 @@ func TestCustomGrowing(t *testing.T) {
 
 	first := buffer.Get(1024)
 	require.Len(t, first, 1024)
+	require.Len(t, buffer.Get(0), 1024)
 	require.Equal(t, 1280, cap(first))
 
 	second := buffer.Get(1280)
 	require.Len(t, second, 1280)
+	require.Len(t, buffer.Get(0), 1280)
 	require.Equal(t, 1280, cap(second))
 	require.Same(t, unsafe.SliceData(first), unsafe.SliceData(second))
 
 	third := buffer.Get(2048)
 	require.Len(t, third, 2048)
+	require.Len(t, buffer.Get(0), 2048)
 	require.Equal(t, 2560, cap(third))
 	require.NotSame(t, unsafe.SliceData(first), unsafe.SliceData(third))
 
 	fourth := buffer.Get(1024)
 	require.Len(t, fourth, 1024)
+	require.Len(t, buffer.Get(0), 1024)
 	require.Equal(t, 2560, cap(fourth))
 	require.Same(t, unsafe.SliceData(third), unsafe.SliceData(fourth))
 }
