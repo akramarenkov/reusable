@@ -36,7 +36,7 @@ func ExampleBuffer_unlimited() {
 	// 1024 2752
 }
 
-func ExampleBuffer_custom_growing() {
+func ExampleBuffer_customGrowing() {
 	buffer := reusable.New[byte](0, grower.Quarter)
 
 	for _, length := range []int{1024, 1280, 2048, 1024} {
