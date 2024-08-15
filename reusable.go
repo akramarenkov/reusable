@@ -24,6 +24,9 @@ type Buffer[Type any] struct {
 //
 // If limit is zero and the growing function is not specified, the grower.Waning
 // function will be used.
+//
+// When specifying multiple growing functions, the first one that is not nil
+// will be used.
 func New[Type any](limit int, growing ...grower.Grower) *Buffer[Type] {
 	bfr := &Buffer[Type]{
 		limit: limit,
