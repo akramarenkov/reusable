@@ -7,6 +7,11 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+const (
+	quarterMaxUnoverflowed = math.MaxInt/5*4 + 2
+	waningMaxUnoverflowed  = (math.MaxInt - 768/4) / 5 * 4
+)
+
 func TestExactly(t *testing.T) {
 	for length := range 1 << 16 {
 		require.Equal(t, length, Exactly(length))
@@ -39,10 +44,11 @@ func TestQuarter(t *testing.T) {
 	require.Equal(t, 1<<10+1<<8, Quarter(1<<10))
 	require.Equal(t, 1<<20+1<<18, Quarter(1<<20))
 	require.Equal(t, 1<<30+1<<28, Quarter(1<<30))
-	require.Equal(t, math.MaxInt, Quarter(quarterMaxUnoverflowed()))
+	require.Equal(t, math.MaxInt-1, Quarter(quarterMaxUnoverflowed-1))
+	require.Equal(t, math.MaxInt, Quarter(quarterMaxUnoverflowed))
 
 	// capacity is overflowed
-	require.Equal(t, math.MaxInt, Quarter(quarterMaxUnoverflowed()+1))
+	require.Equal(t, math.MaxInt, Quarter(quarterMaxUnoverflowed+1))
 	require.Equal(t, math.MaxInt, Quarter(math.MaxInt))
 
 	for length := range 1 << 16 {
@@ -50,10 +56,6 @@ func TestQuarter(t *testing.T) {
 	}
 
 	require.Equal(t, math.MinInt, Quarter(math.MinInt))
-}
-
-func quarterMaxUnoverflowed() int {
-	return math.MaxInt/5*4 + 2
 }
 
 func TestWaning(t *testing.T) {
@@ -84,10 +86,11 @@ func TestWaning(t *testing.T) {
 	require.Equal(t, 1472, Waning(1<<10))
 	require.Equal(t, 1310912, Waning(1<<20))
 	require.Equal(t, 1342177472, Waning(1<<30))
-	require.Equal(t, math.MaxInt, Waning(waningMaxUnoverflowed()))
+	require.Equal(t, math.MaxInt-2, Waning(waningMaxUnoverflowed-1))
+	require.Equal(t, math.MaxInt, Waning(waningMaxUnoverflowed))
 
 	// capacity is overflowed
-	require.Equal(t, math.MaxInt, Waning(waningMaxUnoverflowed()+1))
+	require.Equal(t, math.MaxInt, Waning(waningMaxUnoverflowed+1))
 
 	// interim is overflowed
 	require.Equal(t, math.MaxInt, Waning(math.MaxInt))
@@ -97,10 +100,6 @@ func TestWaning(t *testing.T) {
 	}
 
 	require.Equal(t, math.MinInt, Waning(math.MinInt))
-}
-
-func waningMaxUnoverflowed() int {
-	return (math.MaxInt - 768/4) / 5 * 4
 }
 
 func BenchmarkExactly(b *testing.B) {
