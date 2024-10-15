@@ -14,7 +14,6 @@ func ExampleBuffer_limited() {
 		slice := buffer.Get(length)
 		fmt.Println(len(slice), cap(slice))
 	}
-
 	// Output:
 	// 1024 1024
 	// 1000 1024
@@ -28,7 +27,6 @@ func ExampleBuffer_unlimited() {
 		slice := buffer.Get(length)
 		fmt.Println(len(slice), cap(slice))
 	}
-
 	// Output:
 	// 1024 1472
 	// 1472 1472
@@ -43,7 +41,6 @@ func ExampleBuffer_customGrowing() {
 		slice := buffer.Get(length)
 		fmt.Println(len(slice), cap(slice))
 	}
-
 	// Output:
 	// 1024 1280
 	// 1280 1280
