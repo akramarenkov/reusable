@@ -39,9 +39,9 @@ func New[Type any](limit int, growing ...grower.Grower) *Buffer[Type] {
 		return bfr
 	}
 
-	for _, grower := range growing {
-		if grower != nil {
-			bfr.grower = grower
+	for _, grw := range growing {
+		if grw != nil {
+			bfr.grower = grw
 			return bfr
 		}
 	}
