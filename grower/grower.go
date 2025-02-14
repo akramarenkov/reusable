@@ -41,7 +41,7 @@ func Quarter(length int) int {
 	// Cannot be overflowed to a non-negative value
 	capacity := length + addition
 
-	// overflowed, maximum value is returned to satisfy the condition of monotone
+	// Overflowed, maximum value is returned to satisfy the condition of monotone
 	// non-decreasingness
 	if capacity < 0 {
 		return math.MaxInt
@@ -55,11 +55,14 @@ func Waning(length int) int {
 	const (
 		// Value is chosen speculatively
 		tinyThreshold = 4
+
 		// This value is selected so that the capacity with an requested length equal to
 		// tinyThreshold is the same in both the tiny and small versions
 		tinyConjugation = 8
+
 		// Value is chosen speculatively
 		smallThreshold = 256
+
 		// This value is selected so that the capacity with an requested length equal to
 		// smallThreshold is the same in both the small and main versions i.e. that
 		// the condition length+(length+smallConjugation)/4 == 2*length is
@@ -83,7 +86,7 @@ func Waning(length int) int {
 	// Cannot be overflowed to a non-negative value
 	interim := (length + smallConjugation)
 
-	// overflowed, maximum value is returned to satisfy the condition of monotone
+	// Overflowed, maximum value is returned to satisfy the condition of monotone
 	// non-decreasingness
 	if interim < 0 {
 		return math.MaxInt
@@ -94,7 +97,7 @@ func Waning(length int) int {
 	// Cannot be overflowed to a non-negative value
 	capacity := length + addition
 
-	// overflowed, maximum value is returned to satisfy the condition of monotone
+	// Overflowed, maximum value is returned to satisfy the condition of monotone
 	// non-decreasingness
 	if capacity < 0 {
 		return math.MaxInt

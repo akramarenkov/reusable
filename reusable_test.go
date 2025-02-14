@@ -87,7 +87,7 @@ func TestCustomGrowing(t *testing.T) {
 func BenchmarkBuffer(b *testing.B) {
 	buffer := New[byte](0)
 
-	// slice and require is used to prevent compiler optimizations
+	// Slice and require is used to prevent compiler optimizations
 	slice := buffer.Get(0)
 
 	for range b.N {
@@ -96,14 +96,14 @@ func BenchmarkBuffer(b *testing.B) {
 
 	b.StopTimer()
 
-	// meaningless check
+	// Meaningless check
 	require.NotNil(b, slice)
 }
 
 func BenchmarkBufferEverIncreasing(b *testing.B) {
 	buffer := New[byte](0)
 
-	// slice and require is used to prevent compiler optimizations
+	// Slice and require is used to prevent compiler optimizations
 	slice := buffer.Get(0)
 
 	for length := range b.N {
@@ -112,6 +112,6 @@ func BenchmarkBufferEverIncreasing(b *testing.B) {
 
 	b.StopTimer()
 
-	// meaningless check
+	// Meaningless check
 	require.NotNil(b, slice)
 }

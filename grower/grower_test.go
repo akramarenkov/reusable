@@ -47,7 +47,7 @@ func TestQuarter(t *testing.T) {
 	require.Equal(t, math.MaxInt-1, Quarter(quarterMaxUnoverflowed-1))
 	require.Equal(t, math.MaxInt, Quarter(quarterMaxUnoverflowed))
 
-	// capacity is overflowed
+	// Capacity is overflowed
 	require.Equal(t, math.MaxInt, Quarter(quarterMaxUnoverflowed+1))
 	require.Equal(t, math.MaxInt, Quarter(math.MaxInt))
 
@@ -64,7 +64,7 @@ func TestWaning(t *testing.T) {
 	require.Equal(t, 8, Waning(2))
 	require.Equal(t, 8, Waning(3))
 
-	// edge of tiny and small
+	// Edge of tiny and small
 	require.Equal(t, 8, Waning(4))
 
 	require.Equal(t, 10, Waning(5))
@@ -74,7 +74,7 @@ func TestWaning(t *testing.T) {
 	require.Equal(t, 18, Waning(9))
 	require.Equal(t, 20, Waning(10))
 
-	// edge of small and main
+	// Edge of small and main
 	require.Equal(t, 512, Waning(256))
 
 	require.Equal(t, 513, Waning(257))
@@ -89,10 +89,10 @@ func TestWaning(t *testing.T) {
 	require.Equal(t, math.MaxInt-2, Waning(waningMaxUnoverflowed-1))
 	require.Equal(t, math.MaxInt, Waning(waningMaxUnoverflowed))
 
-	// capacity is overflowed
+	// Capacity is overflowed
 	require.Equal(t, math.MaxInt, Waning(waningMaxUnoverflowed+1))
 
-	// interim is overflowed
+	// Interim is overflowed
 	require.Equal(t, math.MaxInt, Waning(math.MaxInt))
 
 	for length := range 1 << 16 {
@@ -103,7 +103,7 @@ func TestWaning(t *testing.T) {
 }
 
 func BenchmarkExactly(b *testing.B) {
-	// capacity and require is used to prevent compiler optimizations
+	// Capacity and require is used to prevent compiler optimizations
 	capacity := 0
 
 	for length := range b.N {
@@ -112,12 +112,12 @@ func BenchmarkExactly(b *testing.B) {
 
 	b.StopTimer()
 
-	// meaningless check
+	// Meaningless check
 	require.NotNil(b, capacity)
 }
 
 func BenchmarkQuarter(b *testing.B) {
-	// capacity and require is used to prevent compiler optimizations
+	// Capacity and require is used to prevent compiler optimizations
 	capacity := 0
 
 	for length := range b.N {
@@ -126,12 +126,12 @@ func BenchmarkQuarter(b *testing.B) {
 
 	b.StopTimer()
 
-	// meaningless check
+	// Meaningless check
 	require.NotNil(b, capacity)
 }
 
 func BenchmarkWaning(b *testing.B) {
-	// capacity and require is used to prevent compiler optimizations
+	// Capacity and require is used to prevent compiler optimizations
 	capacity := 0
 
 	for length := range b.N {
@@ -140,6 +140,6 @@ func BenchmarkWaning(b *testing.B) {
 
 	b.StopTimer()
 
-	// meaningless check
+	// Meaningless check
 	require.NotNil(b, capacity)
 }
